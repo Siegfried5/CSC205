@@ -1,3 +1,4 @@
 test
 .metadata/
 .recommenders/
+*.class

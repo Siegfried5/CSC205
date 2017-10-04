@@ -22,6 +22,11 @@ public class PostfixEvaluator
     private final static char UNARY_MINUS = '~';
     private final static char FACTORIAL = '!';
     private final static char GREATER = '>';
+    private final static char LESS = '<';
+    private final static char EQUAL = '=';
+    private final static char AND = '&';
+    private final static char OR = '|';
+    private final static char TERTIARY = '?';
 
     private Stack<Integer> stack;
 
@@ -52,20 +57,34 @@ public class PostfixEvaluator
 
             if (isOperator(token))
             {
-            	if(check_for_unary(token)) {
+            	if(unaryOperators(token)) 
+            	{
         			op2 = (stack.pop()).intValue();
         			result = evaluateSingleOperator(token.charAt(0), 0, op2);
         			stack.push(new Integer(result));
         		}
-            	else {
-            		          	
-	            	try {
+            	
+            	else 
+            	{     	
+	            	try 
+	            	{
+	                	if(BooleanTERTIARYOperators(token))
+	                	{
 	                		op2 = (stack.pop()).intValue();
 	                		op1 = (stack.pop()).intValue();
 	                        result = evaluateSingleOperator(token.charAt(0), op1, op2);
 	                        stack.push(new Integer(result));
+	                	}
+	                	else
+	                	{
+	                		op2 = (stack.pop()).intValue();
+	                		op1 = (stack.pop()).intValue();
+	                        result = evaluateSingleOperator(token.charAt(0), op1, op2);
+	                        stack.push(new Integer(result));
+	                	}
 	            	}
-	            	catch (java.util.EmptyStackException empty){
+	            	catch (java.util.EmptyStackException ex)
+	            	{
 	            		System.out.println("ERROR: Insufficient operands for " + token);
 	            	}
             	}
@@ -74,7 +93,8 @@ public class PostfixEvaluator
                 stack.push(new Integer(Integer.parseInt(token)));
         }
         
-        if (stack.size() == 1) {
+        if (stack.size() == 1) 
+        {
    			return result;
         }
         else {
@@ -82,8 +102,15 @@ public class PostfixEvaluator
         }
     }
     
-    private boolean check_for_unary(String token) {
-    	return (token.equals("~") || token.equals("!") || token.equals(">")) ? true : false;
+    private boolean unaryOperators(String token) 
+    {
+    	return (token.equals("~") || token.equals("!")) ? true : false;
+    }
+    
+    private boolean BooleanTERTIARYOperators(String token) 
+    {
+    	return (token.equals(">") || token.equals("<") || token.equals("=") || 
+    		    token.equals("&") || token.equals("|") || token.equals("?")) ? true : false;
     }
         		
 
@@ -95,8 +122,9 @@ public class PostfixEvaluator
     private boolean isOperator(String token)
     {
         return ( token.equals("+") || token.equals("-") || // OR return ("+-*/".indexOf(token) >= 0);
-                 token.equals("*") || token.equals("/") ) || token.equals("%") || token.equals("^") ||
-        		 token.equals("~") || token.equals("!") || token.equals(">");
+                 token.equals("*") || token.equals("/") || token.equals("%") || token.equals("^") ||
+        		 token.equals("~") || token.equals("!") || token.equals(">") || token.equals("<") ||
+        		 token.equals("=") || token.equals("&") || token.equals("|") || token.equals("?") );
     }
 
     /**
@@ -136,8 +164,82 @@ public class PostfixEvaluator
             	break;
             case FACTORIAL:
             	result = 1;
-            	for (int x = op2; x >= 1; x--) {
+            	for (int x = op2; x >= 1; x--) 
+            	{
             		result *= x;
+            	}
+            	break;
+            case GREATER:
+            	if (op1 > op2) {
+            		result = 1;
+            	}
+            	
+            	else
+            	{
+            		result = 0;
+            	}
+            	break;
+            case LESS:
+            	if (op1 < op2)
+            	{
+            		result = 1;
+            	}
+            	
+            	else
+            	{
+            		result = 0;
+            	}
+            	break;
+            case EQUAL:
+            	if (op1 == op2)
+            	{
+            		result = 1;
+            	}
+            	
+            	else
+            	{
+            		result = 0;
+            	}
+            	break;
+            case AND:
+            	if ( op1 != 0 && op2 != 0)
+            	{
+            		result = 1;
+            	}
+            	
+            	else
+            	{
+            		result = 0;
+            	}
+            	break;
+            case OR:
+            	if ( op1 == 1 || op2 == 1 )
+            	{
+            		result = 1;
+            	}
+            	
+            	else
+            	{
+            		result = 0;
+            	}
+            	break;
+            case TERTIARY:
+            	try {
+            		int op3 = (stack.pop()).intValue();
+ 
+        			if (op3 != 0) 
+        			{
+        				result = op1;
+        			}
+        			
+        			else
+        			{
+        				result = op2;
+        			}
+            	}
+            	catch (java.util.EmptyStackException ex)
+            	{
+            		System.out.println("ERROR: Insufficient operands for ?");
             	}
             	break;
         }

@@ -27,8 +27,9 @@ public class PostfixTester
 			System.out.println("Each token must be an integer or an operator (+,-,*,/,%,^,~,!)");
             expression = in.nextLine();
 
-            try {
-            	result = evaluator.evaluate(expression);
+            try 
+            {
+            	 result = evaluator.evaluate(expression);
             	 System.out.println();
                  System.out.println("That expression equals " + result);
             }
