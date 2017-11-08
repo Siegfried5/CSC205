@@ -10,17 +10,14 @@ public class CSCMatch {
 	
 	public static void main(String[] args)
 	{
-		keyboard = new Scanner(System.in);
-		
 		while(again)
 		{
+			keyboard = new Scanner(System.in);
 			showMenue();
-			input = getInput();
+			input = keyboard.nextLine().charAt(0);
 			selector(input);
 		}
 		
-		keyboard.close();
-
 	}
 
 	static void showMenue()
@@ -84,7 +81,7 @@ public class CSCMatch {
 			if(changeMade)
 			{
 				print("are you sure you want to quit without Saving? Y/N");
-				if(getInput() =='y'){again=false;}
+				if(input.toLowerCase().equals('y')){again=false;}
 			}else{again=false;}
 			break;
 		default:
