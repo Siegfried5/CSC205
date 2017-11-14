@@ -1,9 +1,13 @@
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class OrderedList<T extends Comparable<T>> extends LinkedList<T>
+public class OrderedList<T extends Comparable<T>> extends LinkedList<T> 
+implements Serializable
 {
 
 	/**
+	 * if element already exists, it is first removed.
+	 * 
 	 * walks a linked list and adds the element when the next element
 	 * is of a lower value than this one. (using compareTo)
 	 */

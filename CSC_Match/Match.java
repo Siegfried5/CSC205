@@ -1,6 +1,11 @@
+import java.io.Serializable;
 
-public class Match implements Comparable<Match>
+public class Match implements Comparable<Match>, Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Member match;
 	private int compatibility;
 	
